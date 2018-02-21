@@ -11,8 +11,6 @@ import (
 
 func main() {
 	players := make([]Player, 2)
-	players = append(players, Player{})
-	players = append(players, Player{})
 
 	if err := GetInput("Player 1's name:  ", &players[0].Name); err != nil {
 		log.Fatal(err.Error())
