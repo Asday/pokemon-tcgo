@@ -2,6 +2,14 @@ package lib
 
 // This file is likely to split in future.
 
+type EvolutionStage int
+
+const (
+	Basic EvolutionStage = iota
+	Stage1
+	Stage2
+)
+
 type Card struct {
 	Name string
 }
@@ -13,8 +21,9 @@ type TrainerCard struct {
 type PokemonCard struct {
 	Card
 
-	Hp   int
-	Type Element
+	EvolutionStage EvolutionStage
+	Hp             int
+	Type           Element
 
 	// PokemonPower PokemonPower
 	// Moves        []Move
