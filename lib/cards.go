@@ -36,6 +36,7 @@ type PokemonCard struct {
 	Card
 
 	EvolutionStage EvolutionStage
+	EvolvesFrom    string
 	Hp             int
 	Type           Element
 
