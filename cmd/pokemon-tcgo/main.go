@@ -19,7 +19,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	fmt.Printf("%s vs %s!\n", players[0].Name, players[1].Name)
+	fmt.Printf("%s vs %s!\n\n", players[0].Name, players[1].Name)
 	fmt.Print("Flipping coin to see who goes first")
 
 	for i := 0; i < 3; i++ {
