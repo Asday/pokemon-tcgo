@@ -12,6 +12,18 @@ const (
 	Stage2
 )
 
+type Resistance func(damage int) int
+
+func OriginalEraResistance(damage int) int {
+	damage -= 30
+
+	if damage > 0 {
+		return damage
+	}
+
+	return 0
+}
+
 type Card struct {
 	Name string
 }
@@ -32,6 +44,7 @@ type PokemonCard struct {
 
 	WeakTo      Element
 	ResistantTo Element
+	Resistance  Resistance
 	RetreatCost int
 }
 
