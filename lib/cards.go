@@ -24,6 +24,12 @@ type PokemonCard struct {
 	RetreatCost int
 }
 
+type EnergyCard struct {
+	Card
+
+	Type Element
+}
+
 type ActivePokemon Card
 type Bench []Card
 type Deck []Card
