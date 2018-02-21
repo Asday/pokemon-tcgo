@@ -14,11 +14,18 @@ type Game struct {
 	attachedEnergy bool
 }
 
-func NewGame(players []Player, firstPlayer int) Game {
-	return Game{
+func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
+	game := Game{
 		players:       players,
+		decks:         decks,
 		currentPlayer: firstPlayer,
 	}
+
+	for _, deck := range game.decks {
+		deck.Shuffle()
+	}
+
+	return game
 }
 
 func (g *Game) AdvanceTurn() {

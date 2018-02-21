@@ -1,5 +1,7 @@
 package lib
 
+import "math/rand"
+
 // This file is likely to split in future.
 
 type EvolutionStage int
@@ -45,3 +47,9 @@ type Deck []Card
 type DiscardPile []Card
 type Hand []Card
 type PrizeCards []Card
+
+func (d Deck) Shuffle() {
+	rand.Shuffle(len(d), func(i, j int) {
+		d[i], d[j] = d[j], d[i]
+	})
+}
