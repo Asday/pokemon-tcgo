@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"math/rand"
+	"time"
 
 	. "github.com/asday/pokemon-tcgo/lib"
 )
@@ -19,5 +21,19 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	fmt.Printf("1: %s, 2: %s\n", players[0].Name, players[1].Name)
+	fmt.Printf("%s vs %s!\n", players[0].Name, players[1].Name)
+	fmt.Print("Flipping coin to see who goes first")
+
+	for i := 0; i < 3; i++ {
+		time.Sleep(1 * time.Second)
+		fmt.Print(".")
+	}
+
+	time.Sleep(1 * time.Second)
+
+	fmt.Println()
+
+	firstPlayer := rand.Intn(2)
+
+	fmt.Printf("%s wins the toss and goes first!\n", players[firstPlayer].Name)
 }
