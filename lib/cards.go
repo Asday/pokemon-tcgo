@@ -49,10 +49,44 @@ type PokemonCard struct {
 	RetreatCost int
 }
 
+var Ratatta = PokemonCard{
+	Card: Card{
+		Name: "Rattata",
+	},
+	EvolutionStage: Basic,
+	Hp:             30,
+	Type:           Colourless,
+	WeakTo:         Rock,
+	ResistantTo:    Psychic,
+	Resistance:     OriginalEraResistance,
+	RetreatCost:    0,
+}
+
+var Raticate = PokemonCard{
+	Card: Card{
+		Name: "Raticate",
+	},
+	EvolutionStage: Stage1,
+	EvolvesFrom:    "Rattata",
+	Hp:             60,
+	Type:           Colourless,
+	WeakTo:         Rock,
+	ResistantTo:    Psychic,
+	Resistance:     OriginalEraResistance,
+	RetreatCost:    1,
+}
+
 type EnergyCard struct {
 	Card
 
 	Type Element
+}
+
+var GrassEnergy = EnergyCard{
+	Card: Card{
+		Name: "Grass Energy",
+	},
+	Type: Grass,
 }
 
 type ActivePokemon Card
