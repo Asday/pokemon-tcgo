@@ -8,6 +8,7 @@ type Game struct {
 	discardPiles  []DiscardPile
 	benches       []Bench
 	activePokemon []ActivePokemon
+	prizeCards    []PrizeCards
 
 	currentPlayer  int
 	attachedEnergy bool

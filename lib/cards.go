@@ -35,3 +35,4 @@ type Bench []Card
 type Deck []Card
 type DiscardPile []Card
 type Hand []Card
+type PrizeCards []Card
