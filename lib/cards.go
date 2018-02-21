@@ -13,14 +13,14 @@ type TrainerCard struct {
 type PokemonCard struct {
 	Card
 
-	Hp int
-	// Type Element
-	//
+	Hp   int
+	Type Element
+
 	// PokemonPower PokemonPower
 	// Moves        []Move
-	//
-	// WeakTo      Element
-	// ResistantTo Element
+
+	WeakTo      Element
+	ResistantTo Element
 	RetreatCost int
 }
 
