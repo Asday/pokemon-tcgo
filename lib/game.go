@@ -1,14 +1,22 @@
 package lib
 
 type Game struct {
-	currentPlayer int
-	players       []Player
+	players []Player
+
+	decks         []Deck
+	hands         []Hand
+	discardPiles  []DiscardPile
+	benches       []Bench
+	activePokemon []ActivePokemon
+
+	currentPlayer  int
+	attachedEnergy bool
 }
 
 func NewGame(players []Player, firstPlayer int) Game {
 	return Game{
-		firstPlayer,
-		players,
+		players:       players,
+		currentPlayer: firstPlayer,
 	}
 }
 
