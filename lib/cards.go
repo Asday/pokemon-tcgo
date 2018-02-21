@@ -24,21 +24,31 @@ func OriginalEraResistance(damage int) int {
 	return 0
 }
 
+type CardType int
+
+const (
+	TrainerCard CardType = iota
+	PokemonCard
+	EnergyCard
+)
+
 type Card struct {
-	Name string
+	Name     string
+	CardType CardType
+
+	TrainerCardDetails
+	PokemonCardDetails
+	Type Element
 }
 
-type TrainerCard struct {
-	Card
+type TrainerCardDetails struct {
+	// Effect func() int ?
 }
 
-type PokemonCard struct {
-	Card
-
+type PokemonCardDetails struct {
 	EvolutionStage EvolutionStage
 	EvolvesFrom    string
 	Hp             int
-	Type           Element
 
 	// PokemonPower PokemonPower
 	// Moves        []Move
@@ -49,43 +59,43 @@ type PokemonCard struct {
 	RetreatCost int
 }
 
-var Ratatta = PokemonCard{
-	Card: Card{
-		Name: "Rattata",
+var Ratatta = Card{
+	Name:     "Rattata",
+	CardType: PokemonCard,
+
+	Type: Colourless,
+
+	PokemonCardDetails: PokemonCardDetails{
+		EvolutionStage: Basic,
+		Hp:             30,
+		WeakTo:         Rock,
+		ResistantTo:    Psychic,
+		Resistance:     OriginalEraResistance,
+		RetreatCost:    0,
 	},
-	EvolutionStage: Basic,
-	Hp:             30,
-	Type:           Colourless,
-	WeakTo:         Rock,
-	ResistantTo:    Psychic,
-	Resistance:     OriginalEraResistance,
-	RetreatCost:    0,
 }
 
-var Raticate = PokemonCard{
-	Card: Card{
-		Name: "Raticate",
+var Raticate = Card{
+	Name:     "Raticate",
+	CardType: PokemonCard,
+
+	Type: Colourless,
+
+	PokemonCardDetails: PokemonCardDetails{
+		EvolutionStage: Stage1,
+		EvolvesFrom:    "Rattata",
+		Hp:             60,
+		WeakTo:         Rock,
+		ResistantTo:    Psychic,
+		Resistance:     OriginalEraResistance,
+		RetreatCost:    1,
 	},
-	EvolutionStage: Stage1,
-	EvolvesFrom:    "Rattata",
-	Hp:             60,
-	Type:           Colourless,
-	WeakTo:         Rock,
-	ResistantTo:    Psychic,
-	Resistance:     OriginalEraResistance,
-	RetreatCost:    1,
 }
 
-type EnergyCard struct {
-	Card
+var GrassEnergy = Card{
+	Name:     "Grass Energy",
+	CardType: EnergyCard,
 
-	Type Element
-}
-
-var GrassEnergy = EnergyCard{
-	Card: Card{
-		Name: "Grass Energy",
-	},
 	Type: Grass,
 }
 
