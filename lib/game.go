@@ -30,8 +30,15 @@ type Game struct {
 
 func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 	game := Game{
-		players:       players,
-		decks:         decks,
+		players: players,
+		decks:   decks,
+
+		hands:         make([]Hand, len(players)),
+		discardPiles:  make([]DiscardPile, len(players)),
+		benches:       make([]Bench, len(players)),
+		activePokemon: make([]ActivePokemon, len(players)),
+		prizeCards:    make([]PrizeCards, len(players)),
+
 		currentPlayer: firstPlayer,
 		phase:         setUp,
 	}
