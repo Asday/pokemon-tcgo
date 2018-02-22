@@ -100,14 +100,38 @@ var GrassEnergy = Card{
 }
 
 type ActivePokemon Card
-type Bench []Card
-type Deck []Card
-type DiscardPile []Card
-type Hand []Card
-type PrizeCards []Card
+
+type collection []Card
+type Bench collection
+type Deck collection
+type DiscardPile collection
+type Hand collection
+type PrizeCards collection
 
 func (d Deck) Shuffle() {
 	rand.Shuffle(len(d), func(i, j int) {
 		d[i], d[j] = d[j], d[i]
 	})
+}
+
+func (c collection) PokemonCards() (cards []Card) {
+	// TODO:  Test this.
+	for _, card := range c {
+		if card.CardType == PokemonCard {
+			cards = append(cards, card)
+		}
+	}
+
+	return
+}
+
+func (c collection) BasicPokemon() (cards []Card) {
+	// TODO:  Test this.
+	for _, card := range c.PokemonCards() {
+		if card.PokemonCardDetails.EvolutionStage == Basic {
+			cards = append(cards, card)
+		}
+	}
+
+	return
 }
