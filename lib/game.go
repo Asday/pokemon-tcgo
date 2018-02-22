@@ -1,5 +1,12 @@
 package lib
 
+type gamePhase int
+
+const (
+	setUp gamePhase = iota
+	play
+)
+
 type Game struct {
 	players []Player
 
@@ -12,6 +19,7 @@ type Game struct {
 
 	currentPlayer  int
 	attachedEnergy bool
+	phase          gamePhase
 }
 
 func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
@@ -19,6 +27,7 @@ func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 		players:       players,
 		decks:         decks,
 		currentPlayer: firstPlayer,
+		phase:         setUp,
 	}
 
 	for _, deck := range game.decks {
