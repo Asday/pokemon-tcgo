@@ -59,7 +59,7 @@ type PokemonCardDetails struct {
 	RetreatCost int
 }
 
-var Ratatta = Card{
+var Rattata = Card{
 	Name:     "Rattata",
 	CardType: PokemonCard,
 
