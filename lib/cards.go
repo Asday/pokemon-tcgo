@@ -1,6 +1,9 @@
 package lib
 
-import "math/rand"
+import (
+	"errors"
+	"math/rand"
+)
 
 // This file is likely to split in future.
 
@@ -134,4 +137,19 @@ func (c collection) BasicPokemon() (cards []Card) {
 	}
 
 	return
+}
+
+func MoveCards(from, to []Card, amount int) error {
+	// TODO:  Test this.
+	if len(from) < amount {
+		return errors.New("not enough cards in `from`")
+	}
+
+	for _, item := range from[:amount] {
+		to = append(to, item)
+	}
+
+	from = from[amount:]
+
+	return nil
 }
