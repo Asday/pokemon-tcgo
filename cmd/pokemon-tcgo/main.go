@@ -13,8 +13,8 @@ func main() {
 	players := make([]Player, 2)
 	decks := make([]Deck, 2)
 
-	decks[0] = Deck{Rattata, Raticate, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy}
-	decks[1] = Deck{Rattata, Rattata, Rattata, Rattata, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy}
+	decks[0] = Deck{Rattata, Raticate, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy}
+	decks[1] = Deck{Rattata, Rattata, Rattata, Rattata, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy}
 
 	// if err := GetInput("Player 1's name:  ", &players[0].Name); err != nil {
 	// 	log.Fatal(err.Error())
