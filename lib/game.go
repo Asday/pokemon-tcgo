@@ -150,7 +150,7 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 				actions = append(actions, ActionInfo{
 					Prompt: fmt.Sprintf(
 						"%s, choose an active Pokémon.",
-						player.Name, // TODO:  Make sure this results in the right player name.
+						player.Name,
 					),
 					Action: func() {
 						g.PlaceActivePokemon(playerIndex)
