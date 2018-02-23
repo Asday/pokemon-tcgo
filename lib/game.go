@@ -47,6 +47,7 @@ func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 	for player := range players {
 		game.hands[player] = make(Hand, 0)
 		game.discardPiles[player] = make(DiscardPile, 0)
+		game.activePokemon[player] = make(ActivePokemon, 0)
 		game.benches[player] = make(Bench, 0)
 		game.prizeCards[player] = make(PrizeCards, 0)
 	}
@@ -143,7 +144,20 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 			}
 		}
 	case placeActivePokemon:
-		fmt.Println("place active")
+		for i, player := range g.players {
+			if len(g.activePokemon[i]) == 0 {
+				playerIndex := i
+				actions = append(actions, ActionInfo{
+					Prompt: fmt.Sprintf(
+						"%s, choose an active Pokémon.",
+						player.Name, // TODO:  Make sure this results in the right player name.
+					),
+					Action: func() {
+						g.PlaceActivePokemon(playerIndex)
+					},
+				})
+			}
+		}
 	case placeBenchedPokemon:
 		fmt.Println("place benched")
 	case play:
@@ -185,4 +199,17 @@ func (g Game) RevealHand(player int) {
 	}
 
 	Next()
+}
+
+func (g *Game) PlaceActivePokemon(player int) {
+	index := Collection(g.hands[player]).GetCardChoice(BasicPokemonValidator)
+
+	hand, activePokemon := MoveCardAtIndex(
+		Collection(g.hands[player]),
+		Collection(g.activePokemon[player]),
+		index,
+	)
+
+	g.hands[player] = Hand(hand)
+	g.activePokemon[player] = ActivePokemon(activePokemon)
 }

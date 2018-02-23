@@ -2,6 +2,7 @@ package lib
 
 import (
 	"errors"
+	"fmt"
 	"math/rand"
 )
 
@@ -46,6 +47,10 @@ type Card struct {
 
 func (c Card) String() string {
 	return c.Name
+}
+
+func (c Card) IsNull() bool {
+	return c.Name == ""
 }
 
 type TrainerCardDetails struct {
@@ -106,9 +111,8 @@ var GrassEnergy = Card{
 	Type: Grass,
 }
 
-type ActivePokemon Card
-
 type Collection []Card
+type ActivePokemon Collection
 type Bench Collection
 type Deck Collection
 type DiscardPile Collection
@@ -121,7 +125,7 @@ func (d Deck) Shuffle() {
 	})
 }
 
-func (c Collection) PokemonCards() (cards []Card) {
+func (c Collection) PokemonCards() (cards Collection) {
 	// TODO:  Test this.
 	for _, card := range c {
 		if card.CardType == PokemonCard {
@@ -132,7 +136,7 @@ func (c Collection) PokemonCards() (cards []Card) {
 	return
 }
 
-func (c Collection) BasicPokemon() (cards []Card) {
+func (c Collection) BasicPokemon() (cards Collection) {
 	// TODO:  Test this.
 	for _, card := range c.PokemonCards() {
 		if card.PokemonCardDetails.EvolutionStage == Basic {
@@ -141,6 +145,40 @@ func (c Collection) BasicPokemon() (cards []Card) {
 	}
 
 	return
+}
+
+type CardValidator func(card Card) (bool, string)
+
+func BasicPokemonValidator(card Card) (bool, string) {
+	if card.CardType != PokemonCard {
+		return false, "That wasn't a Pokémon card."
+	}
+
+	if card.PokemonCardDetails.EvolutionStage != Basic {
+		return false, "That wasn't a Basic Pokémon"
+	}
+
+	return true, ""
+}
+
+func (c Collection) GetCardChoice(validator CardValidator) int {
+	var choices []string
+	for _, card := range c {
+		choices = append(choices, card.String())
+	}
+
+	var choiceIndex int
+	for {
+		choiceIndex = GetChoice("", choices)
+
+		if valid, message := validator(c[choiceIndex]); valid {
+			break
+		} else {
+			fmt.Println(message)
+		}
+	}
+
+	return choiceIndex
 }
 
 func MoveCards(from, to Collection, amount int) (Collection, Collection, error) {
@@ -156,4 +194,26 @@ func MoveCards(from, to Collection, amount int) (Collection, Collection, error) 
 	from = from[amount:]
 
 	return from, to, nil
+}
+
+func MoveCardsAtIndices(from, to Collection, indices []int) (Collection, Collection) {
+	// TODO:  Test this.
+	indexSet := make(map[int]struct{})
+	for _, index := range indices {
+		to = append(to, from[index])
+		indexSet[index] = struct{}{}
+	}
+
+	newFrom := make(Collection, 0)
+	for i, value := range from {
+		if _, ok := indexSet[i]; !ok {
+			newFrom = append(newFrom, value)
+		}
+	}
+
+	return newFrom, to
+}
+
+func MoveCardAtIndex(from, to Collection, index int) (Collection, Collection) {
+	return MoveCardsAtIndices(from, to, []int{index})
 }
