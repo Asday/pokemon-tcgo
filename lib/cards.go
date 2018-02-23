@@ -3,7 +3,6 @@ package lib
 import (
 	"errors"
 	"math/rand"
-	"time"
 )
 
 // This file is likely to split in future.
@@ -117,8 +116,6 @@ type Hand Collection
 type PrizeCards Collection
 
 func (d Deck) Shuffle() {
-	rand.Seed(time.Now().UTC().UnixNano())
-
 	rand.Shuffle(len(d), func(i, j int) {
 		d[i], d[j] = d[j], d[i]
 	})
