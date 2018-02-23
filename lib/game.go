@@ -108,9 +108,9 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 			if len(Collection(hand).BasicPokemon()) == 0 {
 				playerIndex := player
 				actions = append(actions, ActionInfo{
-					Prompt: template.Must(
-						template.New("").Parse("{{.Name}} has no basic Pokémon!\n\n{{.Name}} shows their hand."),
-					),
+					Prompt: template.Must(template.New("").Parse(
+						"{{.Name}} has no basic Pokémon!\n\n{{.Name}} shows their hand.",
+					)),
 					Player: player,
 					Action: func() {
 						g.Mulligan(playerIndex)
