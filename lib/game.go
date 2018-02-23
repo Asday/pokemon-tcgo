@@ -9,7 +9,9 @@ import (
 type gamePhase int
 
 const (
-	setUp gamePhase = iota
+	mulligans gamePhase = iota
+	placeActivePokemon
+	placeBenchedPokemon
 	play
 )
 
@@ -40,7 +42,7 @@ func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 		prizeCards:    make([]PrizeCards, len(players)),
 
 		currentPlayer: firstPlayer,
-		phase:         setUp,
+		phase:         mulligans,
 	}
 
 	for player := range players {
@@ -71,8 +73,13 @@ func (g *Game) AdvanceTurn() {
 
 func (g *Game) AdvancePhase() error {
 	switch g.phase {
-	case setUp:
-		// TODO:  Prize cards.
+	case mulligans:
+		g.phase = placeActivePokemon
+		return nil
+	case placeActivePokemon:
+		g.phase = placeBenchedPokemon
+		return nil
+	case placeBenchedPokemon:
 		g.phase = play
 		return nil
 	}
@@ -102,8 +109,7 @@ type ActionInfo struct {
 
 func (g *Game) GetActions() (actions []ActionInfo) {
 	switch g.phase {
-	case setUp:
-		// Mulligans.
+	case mulligans:
 		for player, hand := range g.hands {
 			if len(Collection(hand).BasicPokemon()) == 0 {
 				playerIndex := player
@@ -118,6 +124,12 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 				})
 			}
 		}
+	case placeActivePokemon:
+		fmt.Println("place active")
+	case placeBenchedPokemon:
+		fmt.Println("place benched")
+	case play:
+		fmt.Println("play")
 	}
 
 	return

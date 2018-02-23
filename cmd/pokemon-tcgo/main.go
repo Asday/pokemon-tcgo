@@ -59,7 +59,5 @@ func main() {
 			fmt.Println()
 			action.Action()
 		}
-
-		break // TODO:  Remove.
 	}
 }
