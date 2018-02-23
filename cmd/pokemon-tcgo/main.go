@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
-	"time"
 	"os"
+	"time"
 
 	. "github.com/asday/pokemon-tcgo/lib"
 )
@@ -36,6 +36,7 @@ func main() {
 
 	fmt.Println()
 
+	rand.Seed(time.Now().UTC().UnixNano())
 	firstPlayer := rand.Intn(2)
 
 	fmt.Printf("%s wins the toss and goes first!\n", players[firstPlayer].Name)
