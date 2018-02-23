@@ -16,3 +16,7 @@ func GetInput(prompt string, output *string) error {
 
 	return scanner.Err()
 }
+
+func Next() error {
+	return GetInput("Press Enter to continue...", nil)
+}
