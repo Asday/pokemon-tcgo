@@ -108,7 +108,7 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 			if len(Collection(hand).BasicPokemon()) == 0 {
 				actions = append(actions, ActionInfo{
 					Prompt: template.Must(
-						template.New("").Parse("{{.Name}} has no basic Pokémon!"),
+						template.New("").Parse("{{.Name}} has no basic Pokémon!\n\n{{.Name}} shows their hand."),
 					),
 					Player: player,
 					Action: func() {
@@ -123,5 +123,11 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 }
 
 func (g *Game) Mulligan(player int) {
-	fmt.Println("mulligan")
+	g.RevealHand(player)
+}
+
+func (g Game) RevealHand(player int) {
+	for _, card := range g.hands[player] {
+		fmt.Println(card)
+	}
 }

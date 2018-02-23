@@ -39,7 +39,7 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 	firstPlayer := rand.Intn(2)
 
-	fmt.Printf("%s wins the toss and goes first!\n", players[firstPlayer].Name)
+	fmt.Printf("%s wins the toss and goes first!\n\n", players[firstPlayer].Name)
 
 	game := NewGame(players, decks, firstPlayer)
 
