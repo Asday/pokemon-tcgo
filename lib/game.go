@@ -43,6 +43,13 @@ func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 		phase:         setUp,
 	}
 
+	for player := range players {
+		game.hands[player] = make(Hand, 0)
+		game.discardPiles[player] = make(DiscardPile, 0)
+		game.benches[player] = make(Bench, 0)
+		game.prizeCards[player] = make(PrizeCards, 0)
+	}
+
 	for _, deck := range game.decks {
 		deck.Shuffle()
 	}
