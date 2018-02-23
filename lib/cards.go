@@ -139,10 +139,10 @@ func (c Collection) BasicPokemon() (cards []Card) {
 	return
 }
 
-func MoveCards(from, to []Card, amount int) error {
+func MoveCards(from, to Collection, amount int) (Collection, Collection, error) {
 	// TODO:  Test this.
 	if len(from) < amount {
-		return errors.New("not enough cards in `from`")
+		return nil, nil, errors.New("not enough cards in `from`")
 	}
 
 	for _, item := range from[:amount] {
@@ -151,5 +151,5 @@ func MoveCards(from, to []Card, amount int) error {
 
 	from = from[amount:]
 
-	return nil
+	return from, to, nil
 }

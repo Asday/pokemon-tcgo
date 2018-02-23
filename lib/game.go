@@ -80,8 +80,16 @@ func (g *Game) AdvancePhase() error {
 	return errors.New("no next phase")
 }
 
-func (g *Game) Draw(player int, cards int) {
-	MoveCards(g.decks[player], g.hands[player], cards)
+func (g *Game) Draw(player int, cards int) error {
+	deck, hand, err := MoveCards(Collection(g.decks[player]), Collection(g.hands[player]), cards)
+	if err != nil {
+		return err
+	}
+
+	g.decks[player] = Deck(deck)
+	g.hands[player] = Hand(hand)
+
+	return nil
 }
 
 type Action func()
