@@ -18,5 +18,7 @@ func GetInput(prompt string, output *string) error {
 }
 
 func Next() error {
-	return GetInput("Press Enter to continue...", nil)
+	var input string
+
+	return GetInput("Press Enter to continue...", &input)
 }
