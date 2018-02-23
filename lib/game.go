@@ -80,6 +80,7 @@ func (g *Game) AdvancePhase() error {
 		g.phase = placeBenchedPokemon
 		return nil
 	case placeBenchedPokemon:
+		g.placePrizeCards(6)
 		g.phase = play
 		return nil
 	}
@@ -95,6 +96,24 @@ func (g *Game) Draw(player int, cards int) error {
 
 	g.decks[player] = Deck(deck)
 	g.hands[player] = Hand(hand)
+
+	return nil
+}
+
+func (g *Game) placePrizeCards(cards int) error {
+	for player := range g.players {
+		deck, prizeCards, err := MoveCards(
+			Collection(g.decks[player]),
+			Collection(g.prizeCards[player]),
+			cards,
+		)
+		if err != nil {
+			return err
+		}
+
+		g.decks[player] = Deck(deck)
+		g.prizeCards[player] = PrizeCards(prizeCards)
+	}
 
 	return nil
 }
