@@ -131,4 +131,6 @@ func (g Game) RevealHand(player int) {
 	for _, card := range g.hands[player] {
 		fmt.Println(card)
 	}
+
+	Next()
 }
