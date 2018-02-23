@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"time"
+	"os"
 
 	. "github.com/asday/pokemon-tcgo/lib"
 )
