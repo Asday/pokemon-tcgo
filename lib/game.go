@@ -27,6 +27,8 @@ type Game struct {
 	currentPlayer  int
 	attachedEnergy bool
 	phase          gamePhase
+
+	placedBenchedPokemon []bool
 }
 
 func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
@@ -42,6 +44,8 @@ func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 
 		currentPlayer: firstPlayer,
 		phase:         mulligans,
+
+		placedBenchedPokemon: make([]bool, len(players)),
 	}
 
 	for player := range players {
@@ -50,6 +54,8 @@ func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 		game.activePokemon[player] = make(ActivePokemon, 0)
 		game.benches[player] = make(Bench, 0)
 		game.prizeCards[player] = make(PrizeCards, 0)
+
+		game.placedBenchedPokemon[player] = false
 	}
 
 	for _, deck := range game.decks {
@@ -159,7 +165,20 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 			}
 		}
 	case placeBenchedPokemon:
-		fmt.Println("place benched")
+		for i, player := range g.players {
+			if !g.placedBenchedPokemon[i] {
+				playerIndex := i
+				actions = append(actions, ActionInfo{
+					Prompt: fmt.Sprintf(
+						"%s, choose up to 5 basic Pokémon to place on the bench.",
+						player.Name,
+					),
+					Action: func() {
+						g.PlaceBenchedPokemon(playerIndex)
+					},
+				})
+			}
+		}
 	case play:
 		fmt.Println("play")
 	}
@@ -212,4 +231,9 @@ func (g *Game) PlaceActivePokemon(player int) {
 
 	g.hands[player] = Hand(hand)
 	g.activePokemon[player] = ActivePokemon(activePokemon)
+}
+
+func (g *Game) PlaceBenchedPokemon(player int) {
+	// TODO:  Implement.
+	g.placedBenchedPokemon[player] = true
 }
