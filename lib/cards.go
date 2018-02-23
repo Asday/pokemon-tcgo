@@ -45,6 +45,10 @@ type Card struct {
 	Type Element
 }
 
+func (c Card) String() string {
+	return c.Name
+}
+
 type TrainerCardDetails struct {
 	// Effect func() int ?
 }
