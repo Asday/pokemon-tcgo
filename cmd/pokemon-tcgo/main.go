@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"time"
@@ -17,22 +16,25 @@ func main() {
 	decks[0] = Deck{Rattata, Raticate, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy}
 	decks[1] = Deck{Rattata, Rattata, Rattata, Rattata, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy}
 
-	if err := GetInput("Player 1's name:  ", &players[0].Name); err != nil {
-		log.Fatal(err.Error())
-	}
-	if err := GetInput("Player 2's name:  ", &players[1].Name); err != nil {
-		log.Fatal(err.Error())
-	}
+	// if err := GetInput("Player 1's name:  ", &players[0].Name); err != nil {
+	// 	log.Fatal(err.Error())
+	// }
+	// if err := GetInput("Player 2's name:  ", &players[1].Name); err != nil {
+	// 	log.Fatal(err.Error())
+	// }
+
+	players[0].Name = "Player 1"
+	players[1].Name = "Player 2"
 
 	fmt.Printf("%s vs %s!\n\n", players[0].Name, players[1].Name)
 	fmt.Print("Flipping coin to see who goes first")
 
-	for i := 0; i < 3; i++ {
-		time.Sleep(1 * time.Second)
-		fmt.Print(".")
-	}
-
-	time.Sleep(1 * time.Second)
+	// for i := 0; i < 3; i++ {
+	// 	time.Sleep(1 * time.Second)
+	// 	fmt.Print(".")
+	// }
+	//
+	// time.Sleep(1 * time.Second)
 
 	fmt.Println()
 
