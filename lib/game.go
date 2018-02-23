@@ -154,8 +154,30 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 	return
 }
 
+func (g *Game) ShuffleHandIntoDeck(player int) {
+	// TODO: Test this.
+	// Wonder what happens when you move an empty hand to an empty deck.
+	hand, deck, _ := MoveCards( // Error doesn't matter.
+		Collection(g.hands[player]),
+		Collection(g.decks[player]),
+		len(g.hands[player]),
+	)
+
+	g.hands[player] = Hand(hand)
+	g.decks[player] = Deck(deck)
+
+	g.decks[player].Shuffle()
+}
+
 func (g *Game) Mulligan(player int) {
 	g.RevealHand(player)
+
+	fmt.Printf(
+		"%s shuffles their hand into their deck and draws a new one.\n\n",
+		g.players[player],
+	)
+	g.ShuffleHandIntoDeck(player)
+	g.Draw(player, 7)
 }
 
 func (g Game) RevealHand(player int) {
