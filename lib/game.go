@@ -3,7 +3,6 @@ package lib
 import (
 	"errors"
 	"fmt"
-	"html/template"
 )
 
 type gamePhase int
@@ -121,8 +120,7 @@ func (g *Game) placePrizeCards(cards int) error {
 type Action func()
 
 type ActionInfo struct {
-	Prompt *template.Template
-	Player int
+	Prompt string
 	Action Action
 }
 
@@ -133,10 +131,11 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 			if len(Collection(hand).BasicPokemon()) == 0 {
 				playerIndex := player
 				actions = append(actions, ActionInfo{
-					Prompt: template.Must(template.New("").Parse(
-						"{{.Name}} has no basic Pokémon!\n\n{{.Name}} shows their hand.",
-					)),
-					Player: player,
+					Prompt: fmt.Sprintf(
+						"%s has no basic Pokémon!\n\n%s shows their hand.",
+						g.players[playerIndex].Name,
+						g.players[playerIndex].Name,
+					),
 					Action: func() {
 						g.Mulligan(playerIndex)
 					},

@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"os"
 	"time"
 
 	. "github.com/asday/pokemon-tcgo/lib"
@@ -55,8 +54,7 @@ func main() {
 		}
 
 		for _, action := range actions {
-			action.Prompt.Execute(os.Stdout, players[action.Player])
-			fmt.Println()
+			fmt.Println(action.Prompt)
 			action.Action()
 		}
 	}
