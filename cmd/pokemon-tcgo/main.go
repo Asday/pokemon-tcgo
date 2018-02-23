@@ -11,6 +11,10 @@ import (
 
 func main() {
 	players := make([]Player, 2)
+	decks := make([]Deck, 2)
+
+	decks[0] = Deck{Rattata, Raticate, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy}
+	decks[1] = Deck{Rattata, Rattata, Rattata, Rattata, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy, GrassEnergy}
 
 	if err := GetInput("Player 1's name:  ", &players[0].Name); err != nil {
 		log.Fatal(err.Error())
@@ -35,5 +39,23 @@ func main() {
 
 	fmt.Printf("%s wins the toss and goes first!\n", players[firstPlayer].Name)
 
-	// game := NewGame(players, firstPlayer)
+	game := NewGame(players, decks, firstPlayer)
+
+	for {
+		actions := game.GetActions()
+
+		if len(actions) == 0 {
+			if err := game.AdvancePhase(); err != nil {
+				break
+			}
+		}
+
+		for _, action := range actions {
+			action.Prompt.Execute(os.Stdout, players[action.Player])
+			fmt.Println()
+			action.Action()
+		}
+
+		break // TODO:  Remove.
+	}
 }
