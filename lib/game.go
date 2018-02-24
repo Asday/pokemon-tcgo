@@ -235,5 +235,16 @@ func (g *Game) PlaceActivePokemon(player int) {
 
 func (g *Game) PlaceBenchedPokemon(player int) {
 	// TODO:  Implement.
+	indices := Collection(g.hands[player]).GetCardChoices(BasicPokemonValidator, 5)
+
+	hand, bench := MoveCardsAtIndices(
+		Collection(g.hands[player]),
+		Collection(g.benches[player]),
+		indices,
+	)
+
+	g.hands[player] = Hand(hand)
+	g.benches[player] = Bench(bench)
+
 	g.placedBenchedPokemon[player] = true
 }

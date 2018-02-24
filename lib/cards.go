@@ -125,6 +125,15 @@ func (d Deck) Shuffle() {
 	})
 }
 
+func (c Collection) Names() []string {
+	var names []string
+	for _, card := range c {
+		names = append(names, card.String())
+	}
+
+	return names
+}
+
 func (c Collection) PokemonCards() (cards Collection) {
 	// TODO:  Test this.
 	for _, card := range c {
@@ -162,14 +171,9 @@ func BasicPokemonValidator(card Card) (bool, string) {
 }
 
 func (c Collection) GetCardChoice(validator CardValidator) int {
-	var choices []string
-	for _, card := range c {
-		choices = append(choices, card.String())
-	}
-
 	var choiceIndex int
 	for {
-		choiceIndex = GetChoice("", choices)
+		choiceIndex = GetChoice("", c.Names())
 
 		if valid, message := validator(c[choiceIndex]); valid {
 			break
@@ -179,6 +183,53 @@ func (c Collection) GetCardChoice(validator CardValidator) int {
 	}
 
 	return choiceIndex
+}
+
+type ChoiceIndexError struct {
+	index int
+	err   string
+}
+
+type ChoiceIndexErrors []ChoiceIndexError
+
+func (c ChoiceIndexErrors) Strings(items []string) []string {
+	out := make([]string, 0)
+	for _, choiceIndexError := range c {
+		out = append(out, fmt.Sprintf(
+			"%s is no good:  %s",
+			items[choiceIndexError.index],
+			choiceIndexError.err),
+		)
+	}
+
+	return out
+}
+
+func (c Collection) GetCardChoices(validator CardValidator, maximum int) []int {
+	var choiceIndices []int
+	for {
+		choiceIndices = GetChoices("", c.Names(), maximum)
+
+		errors := make(ChoiceIndexErrors, 0)
+		for _, choiceIndex := range choiceIndices {
+			if valid, message := validator(c[choiceIndex]); !valid {
+				errors = append(errors, ChoiceIndexError{
+					index: choiceIndex,
+					err:   message,
+				})
+			}
+		}
+
+		if len(errors) == 0 {
+			break
+		} else {
+			for _, message := range errors.Strings(c.Names()) {
+				fmt.Println(message)
+			}
+		}
+	}
+
+	return choiceIndices
 }
 
 func MoveCards(from, to Collection, amount int) (Collection, Collection, error) {
