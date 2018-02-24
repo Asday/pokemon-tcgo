@@ -169,6 +169,9 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 				})
 			}
 		}
+
+		return
+
 	case placeActivePokemon:
 		for i, player := range g.players {
 			if len(g.activePokemon[i]) == 0 {
@@ -184,6 +187,9 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 				})
 			}
 		}
+
+		return
+
 	case placeBenchedPokemon:
 		for i, player := range g.players {
 			if !g.placedBenchedPokemon[i] {
@@ -199,13 +205,16 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 				})
 			}
 		}
+
+		return
+
 	case play:
 		if g.GameOver() {
 			return
 		}
 	}
 
-	return
+	panic(fmt.Sprintf("unhandled phase:  %v", g.phase))
 }
 
 func (g Game) GameOver() bool {
