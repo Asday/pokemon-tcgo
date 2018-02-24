@@ -89,6 +89,7 @@ func (g *Game) AdvancePhase() error {
 		return nil
 	case placeBenchedPokemon:
 		g.placePrizeCards(6)
+		g.Draw(g.currentPlayer, 1)
 		g.phase = play
 		return nil
 	}
