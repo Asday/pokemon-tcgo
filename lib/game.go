@@ -29,6 +29,7 @@ type Game struct {
 	phase          gamePhase
 
 	placedBenchedPokemon []bool
+	alive                []bool
 }
 
 func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
@@ -46,6 +47,7 @@ func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 		phase:         mulligans,
 
 		placedBenchedPokemon: make([]bool, len(players)),
+		alive:                make([]bool, len(players)),
 	}
 
 	for player := range players {
@@ -56,6 +58,7 @@ func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 		game.prizeCards[player] = make(PrizeCards, 0)
 
 		game.placedBenchedPokemon[player] = false
+		game.alive[player] = true
 	}
 
 	for _, deck := range game.decks {
@@ -197,10 +200,24 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 			}
 		}
 	case play:
-		fmt.Println("play")
+		if g.GameOver() {
+			return
+		}
 	}
 
 	return
+}
+
+func (g Game) GameOver() bool {
+	playersAlive := 0
+
+	for playerIndex := range g.players {
+		if g.alive[playerIndex] {
+			playersAlive += 1
+		}
+	}
+
+	return playersAlive <= 1
 }
 
 func (g *Game) ShuffleHandIntoDeck(player int) {
