@@ -69,12 +69,16 @@ func NewGame(players []Player, decks []Deck, firstPlayer int) Game {
 	return game
 }
 
-func (g *Game) AdvanceTurn() {
+func (g *Game) advanceCurrentPlayer() {
 	// TODO:  Test this.
 	g.currentPlayer++
 	if g.currentPlayer >= len(g.players) {
 		g.currentPlayer = 0
 	}
+}
+
+func (g *Game) AdvanceTurn() {
+	g.advanceCurrentPlayer()
 
 	g.attachedEnergy = false
 	g.Draw(g.currentPlayer, 1)
