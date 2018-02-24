@@ -77,6 +77,7 @@ func (g *Game) AdvanceTurn() {
 	}
 
 	g.attachedEnergy = false
+	g.Draw(g.currentPlayer, 1)
 }
 
 func (g *Game) AdvancePhase() error {
