@@ -109,6 +109,12 @@ func (g *Game) Draw(player int, cards int) error {
 	g.decks[player] = Deck(deck)
 	g.hands[player] = Hand(hand)
 
+	if cards == 1 {
+		fmt.Printf("%s draws a card.\n", g.players[player].Name)
+	} else {
+		fmt.Printf("%s draws %d cards.\n", g.players[player].Name, cards)
+	}
+
 	return nil
 }
 
@@ -145,8 +151,7 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 				playerIndex := player
 				actions = append(actions, ActionInfo{
 					Prompt: fmt.Sprintf(
-						"%s has no basic Pokémon!\n\n%s shows their hand.",
-						g.players[playerIndex].Name,
+						"%s has no basic Pokémon!\n\n",
 						g.players[playerIndex].Name,
 					),
 					Action: func() {
@@ -205,20 +210,21 @@ func (g *Game) ShuffleHandIntoDeck(player int) {
 	g.decks[player] = Deck(deck)
 
 	g.decks[player].Shuffle()
+
+	fmt.Printf(
+		"%s shuffles their hand into their deck.\n",
+		g.players[player].Name,
+	)
 }
 
 func (g *Game) Mulligan(player int) {
 	g.RevealHand(player)
-
-	fmt.Printf(
-		"%s shuffles their hand into their deck and draws a new one.\n\n",
-		g.players[player],
-	)
 	g.ShuffleHandIntoDeck(player)
 	g.Draw(player, 7)
 }
 
 func (g Game) RevealHand(player int) {
+	fmt.Printf("%s shows their hand.\n", g.players[player].Name)
 	for _, card := range g.hands[player] {
 		fmt.Println(card)
 	}
