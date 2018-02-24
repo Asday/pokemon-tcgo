@@ -153,7 +153,7 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 				playerIndex := player
 				actions = append(actions, ActionInfo{
 					Prompt: fmt.Sprintf(
-						"%s has no basic Pokémon!\n\n",
+						"%s has no basic Pokémon!",
 						g.players[playerIndex].Name,
 					),
 					Action: func() {
