@@ -97,7 +97,11 @@ func (g *Game) AdvancePhase() error {
 }
 
 func (g *Game) Draw(player int, cards int) error {
-	deck, hand, err := MoveCards(Collection(g.decks[player]), Collection(g.hands[player]), cards)
+	deck, hand, err := MoveCards(
+		Collection(g.decks[player]),
+		Collection(g.hands[player]),
+		cards,
+	)
 	if err != nil {
 		return err
 	}
