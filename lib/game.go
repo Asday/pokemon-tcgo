@@ -75,6 +75,8 @@ func (g *Game) AdvanceTurn() {
 	if g.currentPlayer >= len(g.players) {
 		g.currentPlayer = 0
 	}
+
+	g.attachedEnergy = false
 }
 
 func (g *Game) AdvancePhase() error {
