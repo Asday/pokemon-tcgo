@@ -152,7 +152,17 @@ type ActionInfo struct {
 	Action Action
 }
 
-func (g *Game) GetActions() (actions []ActionInfo) {
+type Actions []ActionInfo
+
+func (a Actions) Choices() (choices []string) {
+	for _, action := range a {
+		choices = append(choices, action.Prompt)
+	}
+
+	return
+}
+
+func (g *Game) GetActions() (actions Actions) {
 	switch g.phase {
 	case mulligans:
 		for player, hand := range g.hands {
@@ -167,6 +177,8 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 						g.Mulligan(playerIndex)
 					},
 				})
+
+				return
 			}
 		}
 
@@ -185,6 +197,8 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 						g.PlaceActivePokemon(playerIndex)
 					},
 				})
+
+				return
 			}
 		}
 
@@ -203,6 +217,8 @@ func (g *Game) GetActions() (actions []ActionInfo) {
 						g.PlaceBenchedPokemon(playerIndex)
 					},
 				})
+
+				return
 			}
 		}
 

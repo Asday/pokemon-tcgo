@@ -51,11 +51,12 @@ func main() {
 			if err := game.AdvancePhase(); err != nil {
 				break
 			}
-		}
-
-		for _, action := range actions {
-			fmt.Println(action.Prompt)
-			action.Action()
+		} else if len(actions) == 1 {
+			fmt.Println(actions[0].Prompt)
+			actions[0].Action()
+		} else {
+			chosenAction := GetChoice("Choose an action.", actions.Choices())
+			actions[chosenAction].Action()
 		}
 	}
 }
