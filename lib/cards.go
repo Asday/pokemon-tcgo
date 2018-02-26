@@ -170,6 +170,16 @@ func BasicPokemonValidator(card Card) (bool, string) {
 	return true, ""
 }
 
+func EnergyCardValidator(card Card) (bool, string) {
+	if card.CardType == EnergyCard {
+		return true, ""
+	}
+
+	// TODO: Double colourless.
+
+	return false, "That wasn't an Energy card."
+}
+
 func (c Collection) GetCardChoice(validator CardValidator) int {
 	var choiceIndex int
 	for {
