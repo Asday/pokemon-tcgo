@@ -14,6 +14,22 @@ const (
 	play
 )
 
+type playArea int
+
+const (
+	deck playArea = iota
+	hand
+	discardPile
+	bench
+	activePokemon
+	prizeCards
+)
+
+type specificPlayArea struct {
+	playerIndex int
+	playArea    playArea
+}
+
 type Game struct {
 	players []Player
 
@@ -228,6 +244,21 @@ func (g *Game) GetActions() (actions Actions) {
 		if g.GameOver() {
 			return
 		}
+
+		if g.CanAttachEnergy() {
+			actions = append(actions, ActionInfo{
+				Prompt: "Attach an energy card",
+				Action: func() {
+					g.AttachEnergyCard(
+						specificPlayArea{playerIndex: g.currentPlayer, playArea: hand},
+						specificPlayArea{playerIndex: g.currentPlayer, playArea: activePokemon},
+						specificPlayArea{playerIndex: g.currentPlayer, playArea: bench},
+					)
+				},
+			})
+		}
+
+		return
 	}
 
 	panic(fmt.Sprintf("unhandled phase:  %v", g.phase))
@@ -243,6 +274,11 @@ func (g Game) GameOver() bool {
 	}
 
 	return playersAlive <= 1
+}
+
+func (g Game) CanAttachEnergy() bool {
+	// TODO:  Rain Dance.
+	return !g.attachedEnergy
 }
 
 func (g *Game) ShuffleHandIntoDeck(player int) {
@@ -307,4 +343,76 @@ func (g *Game) PlaceBenchedPokemon(player int) {
 	g.benches[player] = Bench(bench)
 
 	g.placedBenchedPokemon[player] = true
+}
+
+func (g Game) playAreaAsCollection(source specificPlayArea) Collection {
+	switch source.playArea {
+	case deck:
+		return Collection(g.decks[source.playerIndex])
+
+	case hand:
+		return Collection(g.hands[source.playerIndex])
+
+	case discardPile:
+		return Collection(g.discardPiles[source.playerIndex])
+
+	case bench:
+		return Collection(g.benches[source.playerIndex])
+
+	case activePokemon:
+		return Collection(g.activePokemon[source.playerIndex])
+
+	case prizeCards:
+		return Collection(g.prizeCards[source.playerIndex])
+	}
+
+	panic(fmt.Sprintf("Unhandled playArea:  %d", source.playArea))
+}
+
+func (g *Game) setPlayAreaFromCollection(destination specificPlayArea, contents Collection) {
+	switch destination.playArea {
+	case deck:
+		g.decks[destination.playerIndex] = Deck(contents)
+		return
+
+	case hand:
+		g.hands[destination.playerIndex] = Hand(contents)
+		return
+
+	case discardPile:
+		g.discardPiles[destination.playerIndex] = DiscardPile(contents)
+		return
+
+	case bench:
+		g.benches[destination.playerIndex] = Bench(contents)
+		return
+
+	case activePokemon:
+		g.activePokemon[destination.playerIndex] = ActivePokemon(contents)
+		return
+
+	case prizeCards:
+		g.prizeCards[destination.playerIndex] = PrizeCards(contents)
+		return
+	}
+
+	panic(fmt.Sprintf("Unhandled playArea:  %d", destination.playArea))
+}
+
+func (g *Game) AttachEnergyCard(from specificPlayArea, to specificPlayArea, extraTo ...specificPlayArea) {
+	fmt.Println("Choose an energy card.")
+	fromCollection := g.playAreaAsCollection(from)
+	index := fromCollection.GetCardChoice(EnergyCardValidator)
+
+	toCollections := []Collection{g.playAreaAsCollection(to)}
+	toCollection := g.playAreaAsCollection(to)
+	for _, extra := range extraTo {
+		toCollection = append(toCollection, g.playAreaAsCollection(extra)...)
+		toCollections = append(toCollections, g.playAreaAsCollection(extra))
+	}
+
+	fmt.Printf("Choose a Pokémon to attach %s to.\n", fromCollection[index])
+	pokemonIndex := toCollection.GetCardChoice(PokemonValidator)
+
+	_ = pokemonIndex
 }

@@ -69,6 +69,8 @@ type PokemonCardDetails struct {
 	ResistantTo Element
 	Resistance  Resistance
 	RetreatCost int
+
+	Attachments Collection
 }
 
 var Rattata = Card{
@@ -84,6 +86,7 @@ var Rattata = Card{
 		ResistantTo:    Psychic,
 		Resistance:     OriginalEraResistance,
 		RetreatCost:    0,
+		Attachments:    make(Collection, 0),
 	},
 }
 
@@ -101,6 +104,7 @@ var Raticate = Card{
 		ResistantTo:    Psychic,
 		Resistance:     OriginalEraResistance,
 		RetreatCost:    1,
+		Attachments:    make(Collection, 0),
 	},
 }
 
@@ -158,9 +162,17 @@ func (c Collection) BasicPokemon() (cards Collection) {
 
 type CardValidator func(card Card) (bool, string)
 
-func BasicPokemonValidator(card Card) (bool, string) {
+func PokemonValidator(card Card) (bool, string) {
 	if card.CardType != PokemonCard {
 		return false, "That wasn't a Pokémon card."
+	}
+
+	return true, ""
+}
+
+func BasicPokemonValidator(card Card) (bool, string) {
+	if ok, message := PokemonValidator(card); !ok {
+		return ok, message
 	}
 
 	if card.PokemonCardDetails.EvolutionStage != Basic {
